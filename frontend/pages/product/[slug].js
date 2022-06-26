@@ -1,32 +1,47 @@
-import { useQuery } from "urql";
+import {
+  DetailsStyle,
+  ImageWrapper,
+  ProductInfo,
+  Quantity,
+  Buy,
+} from "../../styles/ProductDetails";
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { GET_PRODUCT_QUERY } from "../../lib/query";
+import { useQuery } from "urql";
+import { useRouter } from "next/router";
 
 export default function ProductDetails() {
-  // fetch graphql data
+  //Fetch slug
+  const { query } = useRouter();
+  //Fetch Graphql data
   const [results] = useQuery({
     query: GET_PRODUCT_QUERY,
-    variables: { slug: "h-and-m-girls-green-solid-zip-through-hoodie" },
+    variables: { slug: query.slug },
   });
-
   const { data, fetching, error } = results;
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
-  console.log(data);
+  //Extract Data
+  const { title, description, image } = data.products.data[0].attributes;
 
   return (
-    <div>
-      <img src="" alt="" />
-      <div>
-        <h3>title</h3>
-        <p>description</p>
-      </div>
-      <div>
-        <span>Quantity</span>
-        <button>Plus</button>
-        <p>0</p>
-        <button>Minus</button>
-      </div>
-      <button>Add to cart</button>
-    </div>
+    <DetailsStyle>
+      <img src={image.data.attributes.formats.medium.url} alt={title} />
+      <ProductInfo>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <Quantity>
+          <span>Quantity</span>
+          <button>
+            <AiFillMinusCircle />
+          </button>
+          <p>0</p>
+          <button>
+            <AiFillPlusCircle />
+          </button>
+        </Quantity>
+        <Buy>Add To Cart</Buy>
+      </ProductInfo>
+    </DetailsStyle>
   );
 }
