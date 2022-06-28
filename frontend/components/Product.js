@@ -1,18 +1,15 @@
-import { ProductStyle } from "../styles/ProductStyle";
+import { ProductStyles } from "../styles/ProductStyle";
 
-const Product = ({ product }) => {
-  // Extract the info props
+export default function Product({ product }) {
+  //Extract from props
   const { title, price, image } = product.attributes;
-
   return (
-    <ProductStyle>
+    <ProductStyles>
       <div>
         <img src={image.data.attributes.formats.small.url} alt={title} />
       </div>
       <h2>{title}</h2>
-      <h3>{price}</h3>
-    </ProductStyle>
+      <h3>${price}</h3>
+    </ProductStyles>
   );
-};
-
-export default Product;
+}
