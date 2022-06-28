@@ -10,6 +10,7 @@ import { GET_PRODUCT_QUERY } from "../../lib/query";
 import { useQuery } from "urql";
 import { useRouter } from "next/router";
 
+
 export default function ProductDetails() {
   //Fetch slug
   const { query } = useRouter();
