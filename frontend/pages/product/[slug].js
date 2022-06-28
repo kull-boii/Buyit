@@ -9,9 +9,11 @@ import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { GET_PRODUCT_QUERY } from "../../lib/query";
 import { useQuery } from "urql";
 import { useRouter } from "next/router";
-
+import { useStateContext } from "../../lib/Context";
 
 export default function ProductDetails() {
+  const { qty, increaseQty, decreaseQty, onAdd } = useStateContext();
+
   //Fetch slug
   const { query } = useRouter();
   //Fetch Graphql data
@@ -34,14 +36,16 @@ export default function ProductDetails() {
         <Quantity>
           <span>Quantity</span>
           <button>
-            <AiFillMinusCircle />
+            <AiFillMinusCircle onClick={decreaseQty} />
           </button>
-          <p>0</p>
+          <p>{qty}</p>
           <button>
-            <AiFillPlusCircle />
+            <AiFillPlusCircle onClick={increaseQty} />
           </button>
         </Quantity>
-        <Buy>Add To Cart</Buy>
+        <Buy onClick={() => onAdd(data.products.data[0].attributes, qty)}>
+          Add To Cart
+        </Buy>
       </ProductInfo>
     </DetailsStyle>
   );
